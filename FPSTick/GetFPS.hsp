@@ -1,0 +1,36 @@
+#uselib "kernel32"
+#func Sleep "Sleep" int
+
+#uselib "winmm"
+#func  timeBeginPeriod "timeBeginPeriod" int
+#func  timeEndPeriod   "timeEndPeriod"   int
+#cfunc timeGetTime     "timeGetTime"
+
+timeBeginPeriod 1
+onexit *close
+
+tick = timeGetTime()
+
+#ifdef _DEBUG
+prev = tick
+#endif
+
+repeat
+    await
+    d = 17 - (cnt \ 3 == 0) - (timeGetTime() - tick)
+    if d > 0 {
+        Sleep d
+    }
+#ifdef _DEBUG
+    if (cnt + 1) \ 60 == 0 {
+        current = timeGetTime()
+        title strf("FPS:%.1f", 60000.0 / (current - prev))
+        prev = current
+    }
+#endif
+    tick = timeGetTime()
+loop
+
+*close
+    timeEndPeriod 1
+    end
