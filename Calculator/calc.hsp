@@ -1,0 +1,47 @@
+/*
+	Lazy calculator (calc.hsp)
+	Made by l¶444†
+	Date: 12/04/2022
+*/
+
+#packopt icon "icon.ico"
+#packopt lang "1041"
+
+choice	=	0
+userinput = 0
+firstvalue = 0
+secondvalue = 0
+bothset = 0
+count = 0
+errshown = 0
+
+title "Mini-multiply"
+
+screen 0, 30,120,SCREEN_FIXEDSIZE
+input userinput, 120,30
+pos 0,30
+button "x", *multiply : button "=", *calculate
+
+*multiply
+	if(firstvalue == 0){
+	firstvalue = userinput
+	userinput = 0
+	}
+	stop
+
+*calculate
+	count++
+	if(firstvalue != 0){
+	secondvalue = userinput
+	bothset = 1
+	}
+	if(bothset == 1){
+	mes ""+firstvalue*secondvalue+""
+	firstvalue = 0
+	secondvalue = 0
+	if(count > 2 && errshown == 0){
+		dialog "I have no idea how to fix this.\nPlease restart the application."
+		errshown = 1
+	}
+	}
+	stop
